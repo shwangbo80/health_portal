@@ -11,53 +11,60 @@ interface Step4Props {
   onBack: () => void;
 }
 
-export function Step4MedicalHistory({ formData, updateFormData, onNext, onBack }: Step4Props) {
+export function Step4MedicalHistory({
+  formData,
+  updateFormData,
+  onNext,
+  onBack,
+}: Step4Props) {
   const [newAllergy, setNewAllergy] = useState("");
   const [newMedication, setNewMedication] = useState("");
   const [newCondition, setNewCondition] = useState("");
 
   const addAllergy = () => {
     if (newAllergy.trim()) {
-      updateFormData({ 
-        allergies: [...formData.allergies, newAllergy.trim()] 
+      updateFormData({
+        allergies: [...formData.allergies, newAllergy.trim()],
       });
       setNewAllergy("");
     }
   };
 
   const removeAllergy = (index: number) => {
-    updateFormData({ 
-      allergies: formData.allergies.filter((_, i) => i !== index) 
+    updateFormData({
+      allergies: formData.allergies.filter((_, i) => i !== index),
     });
   };
 
   const addMedication = () => {
     if (newMedication.trim()) {
-      updateFormData({ 
-        medications: [...formData.medications, newMedication.trim()] 
+      updateFormData({
+        medications: [...formData.medications, newMedication.trim()],
       });
       setNewMedication("");
     }
   };
 
   const removeMedication = (index: number) => {
-    updateFormData({ 
-      medications: formData.medications.filter((_, i) => i !== index) 
+    updateFormData({
+      medications: formData.medications.filter((_, i) => i !== index),
     });
   };
 
   const addCondition = () => {
     if (newCondition.trim()) {
-      updateFormData({ 
-        medicalConditions: [...formData.medicalConditions, newCondition.trim()] 
+      updateFormData({
+        medicalConditions: [...formData.medicalConditions, newCondition.trim()],
       });
       setNewCondition("");
     }
   };
 
   const removeCondition = (index: number) => {
-    updateFormData({ 
-      medicalConditions: formData.medicalConditions.filter((_, i) => i !== index) 
+    updateFormData({
+      medicalConditions: formData.medicalConditions.filter(
+        (_, i) => i !== index
+      ),
     });
   };
 
@@ -87,9 +94,15 @@ export function Step4MedicalHistory({ formData, updateFormData, onNext, onBack }
                 onChange={(e) => setNewAllergy(e.target.value)}
                 placeholder="Add an allergy"
                 className="min-h-[44px] flex-1"
-                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addAllergy())}
+                onKeyPress={(e) =>
+                  e.key === "Enter" && (e.preventDefault(), addAllergy())
+                }
               />
-              <button type="button" onClick={addAllergy} className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+              <button
+                type="button"
+                onClick={addAllergy}
+                className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
                 Add
               </button>
             </div>
@@ -128,9 +141,15 @@ export function Step4MedicalHistory({ formData, updateFormData, onNext, onBack }
                 onChange={(e) => setNewMedication(e.target.value)}
                 placeholder="Add a medication"
                 className="min-h-[44px] flex-1"
-                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addMedication())}
+                onKeyPress={(e) =>
+                  e.key === "Enter" && (e.preventDefault(), addMedication())
+                }
               />
-              <button type="button" onClick={addMedication} className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+              <button
+                type="button"
+                onClick={addMedication}
+                className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
                 Add
               </button>
             </div>
@@ -169,9 +188,15 @@ export function Step4MedicalHistory({ formData, updateFormData, onNext, onBack }
                 onChange={(e) => setNewCondition(e.target.value)}
                 placeholder="Add a medical condition"
                 className="min-h-[44px] flex-1"
-                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCondition())}
+                onKeyPress={(e) =>
+                  e.key === "Enter" && (e.preventDefault(), addCondition())
+                }
               />
-              <button type="button" onClick={addCondition} className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+              <button
+                type="button"
+                onClick={addCondition}
+                className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
                 Add
               </button>
             </div>
@@ -201,7 +226,10 @@ export function Step4MedicalHistory({ formData, updateFormData, onNext, onBack }
 
           {/* Primary Care Physician */}
           <div>
-            <label htmlFor="primaryCarePhysician" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="primaryCarePhysician"
+              className="block text-sm font-medium text-gray-700"
+            >
               Primary care physician (if applicable)
             </label>
             <div className="mt-1">
@@ -210,7 +238,9 @@ export function Step4MedicalHistory({ formData, updateFormData, onNext, onBack }
                 name="primaryCarePhysician"
                 type="text"
                 value={formData.primaryCarePhysician}
-                onChange={(e) => updateFormData({ primaryCarePhysician: e.target.value })}
+                onChange={(e) =>
+                  updateFormData({ primaryCarePhysician: e.target.value })
+                }
                 placeholder="Dr. Name or Clinic name"
                 className="min-h-[44px]"
               />
@@ -219,7 +249,10 @@ export function Step4MedicalHistory({ formData, updateFormData, onNext, onBack }
 
           {/* Emergency Medical Information */}
           <div>
-            <label htmlFor="emergencyMedicalInfo" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="emergencyMedicalInfo"
+              className="block text-sm font-medium text-gray-700"
+            >
               Emergency medical information
             </label>
             <div className="mt-1">
@@ -228,13 +261,16 @@ export function Step4MedicalHistory({ formData, updateFormData, onNext, onBack }
                 name="emergencyMedicalInfo"
                 rows={3}
                 value={formData.emergencyMedicalInfo}
-                onChange={(e) => updateFormData({ emergencyMedicalInfo: e.target.value })}
+                onChange={(e) =>
+                  updateFormData({ emergencyMedicalInfo: e.target.value })
+                }
                 placeholder="Any critical medical information for emergency situations (e.g., severe allergies, medical devices, conditions requiring immediate attention)"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
             <p className="mt-1 text-xs text-gray-500">
-              This information will be accessible to emergency responders and healthcare providers in urgent situations
+              This information will be accessible to emergency responders and
+              healthcare providers in urgent situations
             </p>
           </div>
 
@@ -246,8 +282,10 @@ export function Step4MedicalHistory({ formData, updateFormData, onNext, onBack }
                 </h3>
                 <div className="mt-2 text-sm text-yellow-700">
                   <p>
-                    All medical information is protected under HIPAA regulations. This information will only be 
-                    shared with your authorized healthcare providers and will be kept confidential.
+                    All medical information is protected under HIPAA
+                    regulations. This information will only be shared with your
+                    authorized healthcare providers and will be kept
+                    confidential.
                   </p>
                 </div>
               </div>
@@ -255,10 +293,17 @@ export function Step4MedicalHistory({ formData, updateFormData, onNext, onBack }
           </div>
 
           <div className="flex space-x-4 pt-4">
-            <button type="button" onClick={onBack} className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <button
+              type="button"
+              onClick={onBack}
+              className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
+            >
               Back
             </button>
-            <button type="submit" className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <button
+              type="submit"
+              className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
+            >
               Continue to Verification
             </button>
           </div>

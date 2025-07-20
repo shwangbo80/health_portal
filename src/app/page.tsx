@@ -1,96 +1,180 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { HeartIcon, ShieldCheckIcon } from "@heroicons/react/24/outline";
-import { Users, Stethoscope, Shield } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { Users } from "lucide-react";
+import Image from "next/image";
+
+interface LoginFormData {
+  email: string;
+  password: string;
+}
 
 export default function Welcome() {
+  const [formData, setFormData] = useState<LoginFormData>({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Only allow login for demo credentials
+    if (
+      formData.email === "demo@email.com" &&
+      formData.password === "password"
+    ) {
+      setError("");
+      window.location.href = "/dashboard";
+    } else {
+      setError("Invalid email or password. Please use the demo credentials.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col items-center justify-center p-3 sm:p-4">
-      <div className="w-full max-w-lg text-center space-y-6 sm:space-y-8">
-        {/* Logo and App Name */}
-        <div className="space-y-3 sm:space-y-4">
-          <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center">
-            <HeartIcon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            IEHP Portal
-          </h1>
-          <p className="text-base sm:text-lg text-gray-600">
-            Your health, one tap away
-          </p>
-        </div>
-
-        {/* Illustration placeholder */}
-        <div className="bg-blue-100 rounded-lg p-6 sm:p-8 mx-2 sm:mx-4">
-          <div className="flex items-center justify-center space-x-3 sm:space-x-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 rounded-full flex items-center justify-center">
-              <ShieldCheckIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+      <div className=" flex items-center justify-center bg-gradient-to-br from-blue-50 to-white px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-4">
+          {/* Header */}
+          <div className="text-center">
+            <div className="mx-auto w-16 h-16 flex items-center justify-center mb-4">
+              <Image
+                src="/iehp-logo.png"
+                alt="IEHP Logo"
+                width={64}
+                height={64}
+              />
             </div>
-            <div className="text-left">
-              <p className="text-sm text-gray-600">Secure & Private</p>
-              <p className="text-xs text-gray-500">
-                Your health data is protected
-              </p>
+            <div className="mt-10">
+              <h2 className="flex items-center text-black text-xl font-semibold justify-center">
+                <Users className="mr-2 h-5 w-5" />
+                Patient Login
+              </h2>
+            </div>
+            <p className="text-sm text-gray-600 mt-1">
+              Access your health records and appointments
+            </p>
+          </div>
+
+          {/* Login Form */}
+          <div className="border-1 border-blue-300 rounded-lg overflow-hidden w-sm">
+            <div className="p-6">
+              <form onSubmit={handleLogin} className="space-y-4">
+                {error && (
+                  <div className="bg-red-100 border border-red-300 text-red-700 rounded-md px-3 py-2 text-sm mb-2">
+                    {error}
+                  </div>
+                )}
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Email address
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    placeholder="Enter your email"
+                    className="mt-1 flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 disabled:cursor-not-allowed disabled:opacity-50 min-h-[44px] text-gray-900"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    value={formData.password}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
+                    placeholder="Enter your password"
+                    className="mt-1 flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400  disabled:cursor-not-allowed disabled:opacity-50 min-h-[44px] text-gray-900"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <input
+                      id="remember-me"
+                      name="remember-me"
+                      type="checkbox"
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    />
+                    <label
+                      htmlFor="remember-me"
+                      className="ml-2 block text-sm text-gray-900"
+                    >
+                      Remember me
+                    </label>
+                  </div>
+
+                  <div className="text-sm">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 hover:text-blue-500"
+                    >
+                      Forgot your password?
+                    </a>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
+                >
+                  Sign in to Patient Portal
+                </button>
+              </form>
+              {/* Demo Credentials */}
+              <div className="mt-4">
+                <div className="">
+                  <h3 className="text-sm font-medium text-blue-900 mb-2">
+                    Demo Credentials
+                  </h3>
+                  <div className="space-y-1 text-xs text-blue-800">
+                    <p>
+                      <strong>Email:</strong> demo@email.com
+                    </p>
+                    <p>
+                      <strong>Password:</strong> password
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Portal Access Options */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">
-            Choose Your Portal
-          </h2>
-
-          {/* Patient Portal Button*/}
-          <Button
-            className="p-8 rounded-4xl  hover:text-white transition-colors w-auto"
-            size="lg"
-            variant="outline"
-          >
-            <Link href="/auth/patient-login" className="flex items-center">
-              <Users className="h-8 w-8 me-3" />
-              <span className="text-base">Patient Portal</span>
-            </Link>
-          </Button>
-
-          {/* Admin Portal Button*/}
-          <Link href="/auth/provider-login" className="block">
-            <Button
-              className="p-8 rounded-4xl  hover:text-white transition-colors w-auto"
-              size="lg"
-              variant="outline"
-            >
-              <Stethoscope className="h-8 w-8 me-3" />
-              <span className="text-base">Provider Portal</span>
-            </Button>
-          </Link>
-
-          {/* Provider Portal Button*/}
-          <Link href="/auth/admin-login" className="block">
-            <Button
-              className="p-8 rounded-4xl  hover:text-white transition-colors w-auto"
-              size="lg"
-              variant="outline"
-            >
-              <Shield className="h-8 w-8 me-3" />
-              <span className="text-base">admin Portal</span>
-            </Button>
-          </Link>
-        </div>
-
-        {/* Alternative Login Options */}
-        <div className="space-y-3 sm:space-y-4">
-          <Link href="/auth/signup" className="block">
-            <Button className="w-full min-h-[48px]" size="lg">
-              Sign Up for Patient Portal
-            </Button>
-          </Link>
-        </div>
-
-        {/* Footer */}
-        <div className="text-xs text-gray-500 space-y-2">
-          <p>By continuing, you agree to our Terms of Service</p>
-          <p>and Privacy Policy</p>
+          {/* Navigation Links */}
+          <div className="text-center space-y-2">
+            <p className="text-sm text-gray-600">
+              Don&apos;t have an account?{" "}
+              <a
+                href="/auth/signup"
+                className="font-medium text-blue-600 hover:text-blue-500"
+              >
+                Sign up here
+              </a>
+            </p>
+            <p className="text-xs text-gray-500">
+              For help, call (909) 890-2000
+            </p>
+          </div>
         </div>
       </div>
     </div>

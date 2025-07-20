@@ -2,16 +2,28 @@
 
 import { useState, useEffect } from "react";
 import { SignupFormData } from "@/types";
-import { CheckCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import {
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+} from "@heroicons/react/24/outline";
 
 interface Step5Props {
   formData: SignupFormData;
   updateFormData: (data: Partial<SignupFormData>) => void;
   onComplete: () => void;
   onBack: () => void;
+  verificationSent: boolean;
+  setVerificationSent: (sent: boolean) => void;
+  countdown: number;
+  setCountdown: (n: number) => void;
 }
 
-export function Step5Verification({ formData, updateFormData, onComplete, onBack }: Step5Props) {
+export function Step5Verification({
+  formData,
+  updateFormData,
+  onComplete,
+  onBack,
+}: Step5Props) {
   const [verificationSent, setVerificationSent] = useState(false);
   const [countdown, setCountdown] = useState(0);
 
@@ -26,7 +38,13 @@ export function Step5Verification({ formData, updateFormData, onComplete, onBack
     setVerificationSent(true);
     setCountdown(60);
     // In a real app, this would call an API to send the verification code
-    console.log(`Sending verification code to ${formData.verificationMethod === 'email' ? formData.email : formData.phone}`);
+    console.log(
+      `Sending verification code to ${
+        formData.verificationMethod === "email"
+          ? formData.email
+          : formData.phone
+      }`
+    );
   };
 
   const resendCode = () => {
@@ -44,9 +62,15 @@ export function Step5Verification({ formData, updateFormData, onComplete, onBack
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm">
       <div className="p-6 border-b border-gray-200">
-        <h3 className="text-lg font-medium text-gray-900">Account Verification</h3>
+        <h3 className="text-lg font-medium text-gray-900">
+          Account Verification
+        </h3>
         <p className="mt-1 text-sm text-gray-600">
-          We need to verify your {formData.verificationMethod === 'email' ? 'email address' : 'phone number'} to secure your account
+          We need to verify your{" "}
+          {formData.verificationMethod === "email"
+            ? "email address"
+            : "phone number"}{" "}
+          to secure your account
         </p>
       </div>
       <div className="p-6">
@@ -63,8 +87,12 @@ export function Step5Verification({ formData, updateFormData, onComplete, onBack
                     type="radio"
                     name="verificationMethod"
                     value="email"
-                    checked={formData.verificationMethod === 'email'}
-                    onChange={(e) => updateFormData({ verificationMethod: e.target.value as 'email' | 'sms' })}
+                    checked={formData.verificationMethod === "email"}
+                    onChange={(e) =>
+                      updateFormData({
+                        verificationMethod: e.target.value as "email" | "sms",
+                      })
+                    }
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
                   />
                   <span className="ml-2 text-sm text-gray-900">
@@ -76,8 +104,12 @@ export function Step5Verification({ formData, updateFormData, onComplete, onBack
                     type="radio"
                     name="verificationMethod"
                     value="sms"
-                    checked={formData.verificationMethod === 'sms'}
-                    onChange={(e) => updateFormData({ verificationMethod: e.target.value as 'email' | 'sms' })}
+                    checked={formData.verificationMethod === "sms"}
+                    onChange={(e) =>
+                      updateFormData({
+                        verificationMethod: e.target.value as "email" | "sms",
+                      })
+                    }
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
                   />
                   <span className="ml-2 text-sm text-gray-900">
@@ -90,9 +122,9 @@ export function Step5Verification({ formData, updateFormData, onComplete, onBack
 
           {/* Send Verification Code */}
           {!verificationSent && (
-            <button 
-              onClick={sendVerificationCode} 
-              className="w-full"
+            <button
+              onClick={sendVerificationCode}
+              className="w-full text-white cursor-pointer border border-gray-300 bg-blue-600 rounded-md py-3  hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               disabled={!formData.verificationMethod}
             >
               Send Verification Code
@@ -111,8 +143,11 @@ export function Step5Verification({ formData, updateFormData, onComplete, onBack
                     </h3>
                     <div className="mt-2 text-sm text-green-700">
                       <p>
-                        We sent a 6-digit code to your {formData.verificationMethod === 'email' ? 'email' : 'phone'}. 
-                        Please check and enter it below.
+                        We sent a 6-digit code to your{" "}
+                        {formData.verificationMethod === "email"
+                          ? "email"
+                          : "phone"}
+                        . Please check and enter it below.
                       </p>
                     </div>
                   </div>
@@ -121,7 +156,10 @@ export function Step5Verification({ formData, updateFormData, onComplete, onBack
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="verificationCode" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="verificationCode"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Verification code
                   </label>
                   <div className="mt-1">
@@ -130,37 +168,51 @@ export function Step5Verification({ formData, updateFormData, onComplete, onBack
                       name="verificationCode"
                       type="text"
                       maxLength={6}
-                      value={formData.verificationCode}
-                      onChange={(e) => updateFormData({ verificationCode: e.target.value.replace(/\D/g, '') })}
+                      // value={formData.verificationCode}
+                      onChange={(e) => {
+                        const cleanValue = e.target.value.replace(/\D/g, "");
+                        updateFormData({
+                          verificationCode: cleanValue,
+                        });
+                      }}
                       placeholder="Enter 6-digit code"
-                      className="min-h-[44px] text-center text-lg tracking-widest"
+                      className="min-h-[44px] text-center text-lg text-black font-extrabold tracking-widest border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-full px-3 py-2"
                     />
                   </div>
                 </div>
 
                 <div className="text-center">
                   <p className="text-sm text-gray-600">
-                    Didn&apos;t receive the code?{' '}
+                    Didn&apos;t receive the code?{" "}
                     <button
                       type="button"
                       onClick={resendCode}
                       disabled={countdown > 0}
                       className={`font-medium ${
-                        countdown > 0 
-                          ? 'text-gray-400 cursor-not-allowed' 
-                          : 'text-blue-600 hover:text-blue-500 cursor-pointer hover:cursor-pointer'
+                        countdown > 0
+                          ? "text-gray-400 cursor-not-allowed"
+                          : "text-blue-600 hover:text-blue-500 cursor-pointer hover:cursor-pointer"
                       }`}
                     >
-                      {countdown > 0 ? `Resend in ${countdown}s` : 'Resend code'}
+                      {countdown > 0
+                        ? `Resend in ${countdown}s`
+                        : "Resend code"}
                     </button>
                   </p>
                 </div>
 
                 <div className="flex space-x-4 pt-4">
-                  <button type="button" onClick={onBack} className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                  <button
+                    type="button"
+                    onClick={onBack}
+                    className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
+                  >
                     Back
                   </button>
-                  <button type="submit" className="flex-1">
+                  <button
+                    type="submit"
+                    className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
+                  >
                     Verify & Complete Registration
                   </button>
                 </div>
@@ -178,8 +230,10 @@ export function Step5Verification({ formData, updateFormData, onComplete, onBack
                 </h3>
                 <div className="mt-2 text-sm text-blue-700">
                   <p>
-                    Verification helps protect your health information and ensures only you can access your account. 
-                    Keep your verification codes confidential and never share them with others.
+                    Verification helps protect your health information and
+                    ensures only you can access your account. Keep your
+                    verification codes confidential and never share them with
+                    others.
                   </p>
                 </div>
               </div>

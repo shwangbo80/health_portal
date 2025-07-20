@@ -10,15 +10,21 @@ interface MessagesContainerProps {
   messages: Message[];
 }
 
-export function MessagesContainer({ conversations, messages }: MessagesContainerProps) {
+export function MessagesContainer({
+  conversations,
+  messages,
+}: MessagesContainerProps) {
   const [selectedConversation, setSelectedConversation] = useState("doctor1");
 
-  const conversationMessages = messages.filter(msg => 
-    msg.senderId === selectedConversation || 
-    (msg.senderId === "patient" && selectedConversation)
+  const conversationMessages = messages.filter(
+    (msg) =>
+      msg.senderId === selectedConversation ||
+      (msg.senderId === "patient" && selectedConversation)
   );
 
-  const selectedDoctor = conversations.find(conv => conv.id === selectedConversation);
+  const selectedDoctor = conversations.find(
+    (conv) => conv.id === selectedConversation
+  );
 
   const handleSendMessage = (message: string) => {
     // Handle sending message logic here

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import { cn } from "@/lib/utils";
 import {
   HomeIcon,
   CalendarIcon,
@@ -14,8 +15,8 @@ import {
   XMarkIcon,
   PhoneIcon,
   CogIcon,
-  ClipboardDocumentListIcon
-} from '@heroicons/react/24/outline';
+  ClipboardDocumentListIcon,
+} from "@heroicons/react/24/outline";
 
 interface SidebarItem {
   name: string;
@@ -26,47 +27,47 @@ interface SidebarItem {
 
 const sidebarItems: SidebarItem[] = [
   {
-    name: 'Dashboard',
-    href: '/dashboard',
+    name: "Dashboard",
+    href: "/dashboard",
     icon: HomeIcon,
-    description: 'Overview and quick actions'
+    description: "Overview and quick actions",
   },
   {
-    name: 'Appointments',
-    href: '/appointments',
+    name: "Appointments",
+    href: "/dashboard/appointments",
     icon: CalendarIcon,
-    description: 'Schedule and manage appointments'
+    description: "Schedule and manage appointments",
   },
   {
-    name: 'Prescriptions',
-    href: '/prescriptions',
+    name: "Prescriptions",
+    href: "/dashboard/prescriptions",
     icon: ClipboardDocumentListIcon,
-    description: 'Manage medications and refills'
+    description: "Manage medications and refills",
   },
   {
-    name: 'Lab Results',
-    href: '/lab-results',
+    name: "Lab Results",
+    href: "/dashboard/lab-results",
     icon: DocumentTextIcon,
-    description: 'View test results and reports'
+    description: "View test results and reports",
   },
   {
-    name: 'Messages',
-    href: '/messages',
+    name: "Messages",
+    href: "/dashboard/messages",
     icon: ChatBubbleLeftRightIcon,
-    description: 'Communicate with providers'
+    description: "Communicate with providers",
   },
   {
-    name: 'Telehealth',
-    href: '/appointments/telehealth',
+    name: "Telehealth",
+    href: "/dashboard/appointments/telehealth",
     icon: PhoneIcon,
-    description: 'Virtual consultations'
+    description: "Virtual consultations",
   },
   {
-    name: 'Profile',
-    href: '/profile',
+    name: "Profile",
+    href: "/dashboard/profile",
     icon: UserIcon,
-    description: 'Personal information and settings'
-  }
+    description: "Personal information and settings",
+  },
 ];
 
 interface SidebarProps {
@@ -107,8 +108,8 @@ export function Sidebar({ className }: SidebarProps) {
       {/* Sidebar */}
       <div
         className={cn(
-          'fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0',
-          isOpen ? 'translate-x-0' : '-translate-x-full',
+          "fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 pt-5",
+          isOpen ? "translate-x-0" : "-translate-x-full",
           className
         )}
       >
@@ -126,34 +127,41 @@ export function Sidebar({ className }: SidebarProps) {
             {sidebarItems.map((item) => {
               // Fix active state logic to prevent multiple items being active
               let isActive = false;
-              
-              if (item.href === '/appointments/telehealth') {
+
+              if (item.href === "/appointments/telehealth") {
                 // Only active if exactly on telehealth page
-                isActive = pathname === '/appointments/telehealth';
-              } else if (item.href === '/appointments') {
+                isActive = pathname === "/appointments/telehealth";
+              } else if (item.href === "/appointments") {
                 // Only active if on appointments page but NOT telehealth
-                isActive = pathname === '/appointments' || (pathname.startsWith('/appointments/') && !pathname.includes('telehealth'));
-              } else if (item.href === '/prescriptions') {
+                isActive =
+                  pathname === "/appointments" ||
+                  (pathname.startsWith("/appointments/") &&
+                    !pathname.includes("telehealth"));
+              } else if (item.href === "/prescriptions") {
                 // Active for prescriptions and individual prescription pages
-                isActive = pathname === '/prescriptions' || pathname.startsWith('/prescriptions/');
-              } else if (item.href === '/dashboard') {
+                isActive =
+                  pathname === "/prescriptions" ||
+                  pathname.startsWith("/prescriptions/");
+              } else if (item.href === "/dashboard") {
                 // Only active if exactly on dashboard
-                isActive = pathname === '/dashboard';
+                isActive = pathname === "/dashboard";
               } else {
                 // For other routes, check if pathname starts with the href
-                isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+                isActive =
+                  pathname === item.href ||
+                  pathname.startsWith(item.href + "/");
               }
-              
+
               return (
                 <Link
                   key={item.name}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
                   className={cn(
-                    'group flex items-center px-3 py-3 sm:py-4 text-sm font-medium transition-colors relative min-h-[48px]',
+                    "group flex items-center px-3 py-3 sm:py-4 text-sm font-medium transition-colors relative min-h-[48px]",
                     isActive
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                      ? "bg-blue-50 text-blue-700"
+                      : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
                   )}
                 >
                   {isActive && (
@@ -161,8 +169,10 @@ export function Sidebar({ className }: SidebarProps) {
                   )}
                   <item.icon
                     className={cn(
-                      'mr-3 h-5 w-5 flex-shrink-0',
-                      isActive ? 'text-blue-700' : 'text-gray-400 group-hover:text-gray-500'
+                      "mr-3 h-5 w-5 flex-shrink-0",
+                      isActive
+                        ? "text-blue-700"
+                        : "text-gray-400 group-hover:text-gray-500"
                     )}
                     aria-hidden="true"
                   />
@@ -186,8 +196,12 @@ export function Sidebar({ className }: SidebarProps) {
                 <UserIcon className="w-6 h-6 text-gray-600" />
               </div>
               <div className="ml-3 flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">Soo</p>
-                <p className="text-xs text-gray-500 truncate">Patient ID: 123456</p>
+                <p className="text-sm font-medium text-gray-900 truncate">
+                  Soo
+                </p>
+                <p className="text-xs text-gray-500 truncate">
+                  Patient ID: 123456
+                </p>
               </div>
               <Link
                 href="/profile"

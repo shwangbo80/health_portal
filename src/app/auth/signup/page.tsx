@@ -11,7 +11,7 @@ import {
   Step2PersonalInfo,
   Step3Insurance,
   Step4MedicalHistory,
-  Step5Verification
+  Step5Verification,
 } from "@/components/signup";
 
 const STEPS = [
@@ -32,7 +32,7 @@ export default function SignUpPage() {
     password: "",
     confirmPassword: "",
     acceptTerms: false,
-    
+
     // Step 2: Personal Information
     firstName: "",
     lastName: "",
@@ -50,7 +50,7 @@ export default function SignUpPage() {
       relationship: "",
       phone: "",
     },
-    
+
     // Step 3: Insurance Information
     insuranceProvider: "",
     policyNumber: "",
@@ -58,34 +58,46 @@ export default function SignUpPage() {
     subscriberName: "",
     subscriberDateOfBirth: "",
     relationshipToSubscriber: "",
-    
+
     // Step 4: Medical History
     allergies: [],
     medications: [],
     medicalConditions: [],
     emergencyMedicalInfo: "",
     primaryCarePhysician: "",
-    
+
     // Step 5: Verification
     verificationCode: "",
-    verificationMethod: 'email',
+    verificationMethod: "email",
   });
 
+  // Add verification state for Step5Verification
+  const [verificationSent, setVerificationSent] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+
+  // Debug: Log when formData.verificationCode changes
+  useEffect(() => {
+    console.log(
+      "[PARENT] formData.verificationCode:",
+      formData.verificationCode
+    );
+  }, [formData.verificationCode]);
+
   const updateFormData = (data: Partial<SignupFormData>) => {
-    setFormData(prev => ({ ...prev, ...data }));
+    setFormData((prev) => ({ ...prev, ...data }));
   };
 
   const nextStep = () => {
-    setCurrentStep(prev => Math.min(prev + 1, STEPS.length));
+    setCurrentStep((prev) => Math.min(prev + 1, STEPS.length));
   };
 
   const prevStep = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1));
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
   const completeSignup = () => {
     // In a real app, this would submit the form to the backend
-    console.log('Signup completed:', formData);
+    console.log("Signup completed:", formData);
     router.push("/dashboard");
   };
 
@@ -146,6 +158,10 @@ export default function SignUpPage() {
             updateFormData={updateFormData}
             onComplete={completeSignup}
             onBack={prevStep}
+            verificationSent={verificationSent}
+            setVerificationSent={setVerificationSent}
+            countdown={countdown}
+            setCountdown={setCountdown}
           />
         );
       default:
@@ -159,38 +175,48 @@ export default function SignUpPage() {
       <div className="mx-auto w-full max-w-2xl">
         <div className="text-center mb-8">
           <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center">
-            <svg className="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" clipRule="evenodd" />
+            <svg
+              className="w-7 h-7 sm:w-8 sm:h-8 text-white"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"
+                clipRule="evenodd"
+              />
             </svg>
           </div>
           <h2 className="mt-4 sm:mt-6 text-center text-2xl sm:text-3xl font-bold text-gray-900">
             Create your health portal account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link href="/auth/login" className="font-medium text-blue-600 hover:text-blue-500">
+            Already have an account?{" "}
+            <Link
+              href="/auth/login"
+              className="font-medium text-blue-600 hover:text-blue-500"
+            >
               Sign in here
             </Link>
           </p>
         </div>
 
         {/* Progress Stepper */}
-        <Stepper 
-          currentStep={currentStep} 
-          totalSteps={STEPS.length} 
-          steps={STEPS} 
+        <Stepper
+          currentStep={currentStep}
+          totalSteps={STEPS.length}
+          steps={STEPS}
         />
       </div>
 
       {/* Form Content */}
-      <div className="mx-auto w-full max-w-2xl">
-        {renderStep()}
-      </div>
+      <div className="mx-auto w-full max-w-2xl">{renderStep()}</div>
 
       {/* Footer */}
       <div className="mt-8 text-center">
         <p className="text-xs text-gray-500">
-          Step {currentStep} of {STEPS.length} • Your information is protected by HIPAA regulations
+          Step {currentStep} of {STEPS.length} • Your information is protected
+          by HIPAA regulations
         </p>
       </div>
     </div>
